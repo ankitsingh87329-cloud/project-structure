@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - Face Attendance System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+
+    <h2>📸 Face Attendance System</h2>
+
+    <div>
+        <span>Welcome, {{ session.get('username', 'Admin') }}</span>
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+    </div>
+
+</nav>
+
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages() %}
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="alert">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+{% endwith %}
+
+
+<!-- Main Content -->
+<div class="container">
+
+    <!-- Header -->
+    <div class="page-header">
+
+        <div>
+            <h1>Dashboard</h1>
+
+            <p>
+                Face Recognition Attendance Management System
+            </p>
+        </div>
+
+        <a href="{{ url_for('attendance') }}"
+           class="btn btn-success">
+            📷 Mark Attendance
+        </a>
+
+    </div>
+
+
+    <!-- Statistics Cards -->
+    <div class="cards">
+
+        <div class="card">
+            <h3>Total Students</h3>
+
+            <div class="number">
+                {{ total_students }}
+            </div>
+        </div>
+
+
+        <div class="card">
+            <h3>Present Today</h3>
+
+            <div class="number">
+                {{ present_today }}
+            </div>
+        </div>
+
+
+        <div class="card">
+            <h3>Absent Today</h3>
+
+            <div class="number">
+                {{ absent_today }}
+            </div>
+        </div>
+
+
+        <div class="card">
+            <h3>Total Attendance</h3>
+
+            <div class="number">
+                {{ total_attendance }}
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Quick Actions -->
+    <div class="table-card">
+
+        <h2 style="margin-bottom: 20px;">
+            Quick Actions
+        </h2>
+
+        <a href="{{ url_for('register') }}"
+           class="btn">
+            ➕ Register Student
+        </a>
+
+        <a href="{{ url_for('students') }}"
+           class="btn btn-dark">
+            👨‍🎓 Students
+        </a>
+
+        <a href="{{ url_for('attendance_records') }}"
+           class="btn btn-secondary">
+            📋 Attendance Records
+        </a>
+
+        <a href="{{ url_for('percentage') }}"
+           class="btn">
+            📊 Attendance Percentage
+        </a>
+
+    </div>
+
+
+    <!-- Recent Attendance -->
+    <div class="table-card" style="margin-top: 25px;">
+
+        <div class="page-header">
+
+            <div>
+                <h2>Recent Attendance</h2>
+
+                <p>
+                    Latest attendance records
+                </p>
+            </div>
+
+            <a href="{{ url_for('attendance_records') }}"
+               class="btn btn-secondary">
+                View All
+            </a>
+
+        </div>
+
+
+        {% if recent_attendance %}
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Roll No</th>
+                    <th>Name</th>
+                    <th>Branch</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for record in recent_attendance %}
+
+                <tr>
+
+                    <td>
+                        {{ record['roll_no'] }}
+                    </td>
+
+                    <td>
+                        {{ record['name'] }}
+                    </td>
+
+                    <td>
+                        {{ record['branch'] }}
+                    </td>
+
+                    <td>
+                        {{ record['date'] }}
+                    </td>
+
+                    <td>
+                        {{ record['time'] }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+        <div class="empty">
+
+            <h3>No Attendance Records</h3>
+
+            <p>
+                No attendance has been marked yet.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

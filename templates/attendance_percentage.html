@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Attendance Percentage - Face Attendance System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+
+    <h2>📸 Face Attendance System</h2>
+
+    <div>
+        <a href="{{ url_for('index') }}">Dashboard</a>
+        <a href="{{ url_for('students') }}">Students</a>
+        <a href="{{ url_for('attendance_records') }}">Attendance</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+
+</nav>
+
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages() %}
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="alert">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+{% endwith %}
+
+
+<!-- Main Container -->
+<div class="container">
+
+    <!-- Header -->
+    <div class="page-header">
+
+        <div>
+            <h1>Attendance Percentage</h1>
+
+            <p>
+                View student attendance performance.
+            </p>
+        </div>
+
+        <a href="{{ url_for('index') }}"
+           class="btn btn-secondary">
+            ← Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- Attendance Table -->
+    <div class="table-card">
+
+        {% if data %}
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>ID</th>
+                    <th>Roll No</th>
+                    <th>Student Name</th>
+                    <th>Branch</th>
+                    <th>Present Days</th>
+                    <th>Total Days</th>
+                    <th>Percentage</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for student in data %}
+
+                <tr>
+
+                    <td>
+                        {{ student['id'] }}
+                    </td>
+
+                    <td>
+                        <strong>
+                            {{ student['roll_no'] }}
+                        </strong>
+                    </td>
+
+                    <td>
+                        {{ student['name'] }}
+                    </td>
+
+                    <td>
+                        {{ student['branch'] }}
+                    </td>
+
+                    <td>
+                        {{ student['present_days'] }}
+                    </td>
+
+                    <td>
+                        {{ student['total_days'] }}
+                    </td>
+
+                    <td>
+
+                        {% if student['percentage'] >= 75 %}
+
+                            <span class="badge badge-success">
+                                {{ student['percentage'] }}%
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge badge-danger">
+                                {{ student['percentage'] }}%
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+        <div class="empty">
+
+            <h3>No Students Found</h3>
+
+            <p>
+                Register students first to view attendance percentage.
+            </p>
+
+            <br>
+
+            <a href="{{ url_for('register') }}"
+               class="btn btn-success">
+                ➕ Register Student
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

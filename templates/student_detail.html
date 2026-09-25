@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Details</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="nav-logo">
+            🎓 Face Recognition Attendance
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('index') }}">
+                Home
+            </a>
+
+            <a href="{{ url_for('register') }}">
+                Register Student
+            </a>
+
+            <a href="{{ url_for('mark_attendance_route') }}">
+                📷 Mark Attendance
+            </a>
+
+            <a href="{{ url_for('attendance') }}">
+                Attendance
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= MAIN CONTAINER ================= -->
+
+    <div class="container">
+
+        <div class="card">
+
+            <!-- Heading -->
+
+            <h1>👨‍🎓 Student Details</h1>
+
+            <p class="subtitle">
+                View all registered students in the system.
+            </p>
+
+
+            <!-- ================= SEARCH ================= -->
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="studentSearch"
+                    placeholder="🔍 Search by Roll No, Name, Email or Branch..."
+                    onkeyup="searchStudent()">
+
+            </div>
+
+
+            <!-- ================= STUDENT TABLE ================= -->
+
+            <div class="table-container">
+
+                <table id="studentTable">
+
+                    <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Roll No</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Branch</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% if students %}
+
+                            {% for student in students %}
+
+                            <tr>
+
+                                <td>
+                                    {{ student['id'] }}
+                                </td>
+
+                                <td>
+                                    {{ student['roll_no'] }}
+                                </td>
+
+                                <td>
+                                    {{ student['name'] }}
+                                </td>
+
+                                <td>
+                                    {{ student['email'] }}
+                                </td>
+
+                                <td>
+                                    {{ student['branch'] }}
+                                </td>
+
+                                <td>
+
+                                    <a
+                                        href="{{ url_for('delete_student', student_id=student['id']) }}"
+                                        class="delete-btn"
+                                        onclick="return confirm(
+                                            'Are you sure you want to delete this student?'
+                                        );">
+
+                                        🗑️ Delete
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <tr>
+
+                                <td colspan="6"
+                                    class="no-data">
+
+                                    No students registered yet.
+
+                                </td>
+
+                            </tr>
+
+                        {% endif %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- ================= BUTTONS ================= -->
+
+            <div class="button-group">
+
+                <a
+                    href="{{ url_for('register') }}"
+                    class="btn btn-primary">
+
+                    ➕ Register New Student
+
+                </a>
+
+
+                <a
+                    href="{{ url_for('index') }}"
+                    class="btn btn-secondary">
+
+                    ← Back to Home
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= SEARCH SCRIPT ================= -->
+
+    <script>
+
+        function searchStudent() {
+
+            let input =
+                document.getElementById("studentSearch");
+
+            let filter =
+                input.value.toLowerCase();
+
+            let table =
+                document.getElementById("studentTable");
+
+            let rows =
+                table.getElementsByTagName("tr");
+
+
+            for (let i = 1; i < rows.length; i++) {
+
+                let row =
+                    rows[i];
+
+                let text =
+                    row.textContent.toLowerCase();
+
+                if (text.includes(filter)) {
+
+                    row.style.display = "";
+
+                } else {
+
+                    row.style.display = "none";
+
+                }
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
